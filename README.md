@@ -1,9 +1,9 @@
 # Week #028 ~ #029
 初探 SQL
 
-## SQL 基礎知識
+## 1. SQL 基礎知識
 
-### CREATE TABLE 的用法
+### 1.1. CREATE TABLE 的用法
 
 `CREATE TABLE` 語句用於在資料庫中創建一個新的表格。
 
@@ -18,7 +18,7 @@ CREATE TABLE employees (
 
 上面的 SQL 語句創建了一個名為 `employees` 的表格，包含 `employee_id`, `name`, `position`, 和 `salary` 四個欄位。
 
-### SELECT ... FROM 的用法
+### 1.2. SELECT ... FROM 的用法
 
 `SELECT` 語句用於從資料庫中查詢資料。`FROM` 子句指定要從哪個表格中查詢資料。
 
@@ -191,9 +191,9 @@ SELECT name, salary FROM employees WHERE name LIKE 'J%a_________________________
 
 上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十八個字母的員工的 `name` 和 `salary`。
 
-## ORDER BY 的用法
+## 2. ORDER BY 的用法
 
-### 解析順序
+### 2.1. 解析順序
 FROM > SELECT > ORDER BY
 
 ```sql
@@ -243,11 +243,12 @@ ORDER BY
     position='PM' DESC;
 ```
 
-## WHERE 的用法
+## 3. WHERE 的用法
 
-### 解析順序
+### 3.1. 解析順序
 FROM > WHERE > SELECT > ORDER BY
 
+### 3.2. ``WHERE`` 的使用範例
 ```sql
 SELECT name, position FROM employee WHERE position='PM';
 SELECT name, salary FROM employee WHERE salary > 200; 
@@ -257,7 +258,7 @@ SELECT name, factor FROM employee WHERE factor IS NULL;
 ```
 
 ```sql
-# 以下兩個訪問結果皆為相同：
+-- 以下兩個訪問結果皆為相同：
 SELECT name, salary FROM employee WHERE salary BETWEEN 150 AND 200;
 SELECT name, salary FROM employee WHERE salary >= 150 AND salary <= 200;
 ```
@@ -275,7 +276,7 @@ SELECT name FROM employee WHERE name LIKE '%\_1%' ESCAPE '\';
 SELECT name FROM employee WHERE name LIKE '%\_1_' ESCAPE '\';
 ```
 
-組合 ``WHERE`` 與 ``ORDER BY`` 使用
+### 3.3. 組合 ``WHERE`` 與 ``ORDER BY`` 使用範例
 ```sql
 SELECT
     name, salary
@@ -287,11 +288,12 @@ ORDER BY
     salary DESC;
 ```
 
-## GROUP BY 與 HAVING 的用法
+## 4. GROUP BY 與 HAVING 的用法
 
-### 解析順序
+### 4.1. 解析順序
 FROM > WHERE > SELECT > GROUP BY > ORDER BY > LIMIT
 
+### 4.2. ``GROUP BY`` 的使用範例
 ```sql
 -- 這裡可以注意一下，如果我們不用任何 Aggregate function (例：AVG(...))
 -- 對 GROUP BY 以外的欄做運算，那預設只會拿那個欄位行數在第一順位的值來顯示
@@ -304,11 +306,12 @@ GROUP BY
     position;
 ```
 
-## HAVING 的用法
+## 5. HAVING 的用法
 
-### 解析順序
+### 5.1. 解析順序
 FROM > WHERE > SELECT > GROUP BY > HAVING > ORDER BY > LIMIT
 
+### 5.2. ``HAVING`` 的使用範例
 ```sql
 SELECT
     position,
