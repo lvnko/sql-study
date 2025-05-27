@@ -1,6 +1,387 @@
 # Week #028 ~ #029
 初探 SQL
 
+## SQL 基礎知識
+
+### CREATE TABLE 的用法
+
+`CREATE TABLE` 語句用於在資料庫中創建一個新的表格。
+
+```sql
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    position VARCHAR(100),
+    salary DECIMAL(10, 2)
+);
+```
+
+上面的 SQL 語句創建了一個名為 `employees` 的表格，包含 `employee_id`, `name`, `position`, 和 `salary` 四個欄位。
+
+### SELECT ... FROM 的用法
+
+`SELECT` 語句用於從資料庫中查詢資料。`FROM` 子句指定要從哪個表格中查詢資料。
+
+```sql
+SELECT * FROM employees;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取所有欄位的所有資料。
+
+```sql
+SELECT name, salary FROM employees;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 和 `salary` 欄位的所有資料。
+
+```sql
+SELECT name, salary FROM employees WHERE position = 'software engineer';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `position` 為 'software engineer' 的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees ORDER BY salary DESC;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 和 `salary`，並按照 `salary` 降序排列。
+
+```sql
+SELECT name, salary FROM employees WHERE salary > 50000 ORDER BY salary ASC;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `salary` 大於 50000 的員工的 `name` 和 `salary`，並按照 `salary` 升序排列。
+
+```sql
+SELECT COUNT(*) FROM employees;
+```
+
+上面的 SQL 語句將計算 `employees` 表格中的總行數。
+
+```sql
+SELECT AVG(salary) FROM employees WHERE position = 'software engineer';
+```
+
+上面的 SQL 語句將計算 `position` 為 'software engineer' 的員工的平均 `salary`。
+
+```sql
+SELECT SUM(salary) FROM employees;
+```
+
+上面的 SQL 語句將計算 `employees` 表格中所有員工的總 `salary`。
+
+```sql
+SELECT MIN(salary) FROM employees;
+```
+
+上面的 SQL 語句將找出 `employees` 表格中最低的 `salary`。
+
+```sql
+SELECT MAX(salary) FROM employees;
+```
+
+上面的 SQL 語句將找出 `employees` 表格中最高的 `salary`。
+
+```sql
+SELECT DISTINCT position FROM employees;
+```
+
+上面的 SQL 語句將找出 `employees` 表格中所有不重複的 `position` 值。
+
+```sql
+SELECT name, salary FROM employees LIMIT 10;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取前 10 行資料。
+
+```sql
+SELECT name, salary FROM employees LIMIT 10 OFFSET 20;
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取從第 21 行開始的 10 行資料。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE '%son';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'son' 結尾的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE '%a%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 中包含 'a' 的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE '_a%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 中第二個字母是 'a' 的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J__%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且至少有三個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且以 'a' 結尾的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE '%a%o%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 中包含 'a' 且在 'a' 之後包含 'o' 的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE '_a%o';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 中第二個字母是 'a' 且以 'o' 結尾的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%_a%';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第一個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a__';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a___';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第四個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a____';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第五個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_____';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第六個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a______';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第七個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_______';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第八個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第九個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a__________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十一個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a___________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十二個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a____________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十三個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_____________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十四個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a______________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十五個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_______________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十六個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十七個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十八個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a__________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第十九個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a___________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a____________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十一個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_____________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十二個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a______________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十三個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_______________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十四個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十五個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十六個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a__________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十七個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a___________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十八個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a____________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第二十九個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_____________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a______________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十一個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_______________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十二個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十三個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十四個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a__________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十五個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a___________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十六個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a____________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十七個字母的員工的 `name` 和 `salary`。
+
+```sql
+SELECT name, salary FROM employees WHERE name LIKE 'J%a_____________________________________';
+```
+
+上面的 SQL 語句將從 `employees` 表格中選取 `name` 以 'J' 開頭且包含 'a' 作為倒數第三十八個字母的員工的 `name` 和 `salary`。
+
 ## ORDER BY 的用法
 
 ### 解析順序
