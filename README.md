@@ -363,7 +363,7 @@ ORDER BY `Full Name`;
 - FROM > LEFT JOIN > JOIN CONDITION > SELECT
 - FROM > RIGHT JOIN > JOIN CONDITION > SELECT
 
-# 7.2 INNER JOIN
+### 7.2 INNER JOIN
 
 ```sql
 SELECT
@@ -392,7 +392,7 @@ WHERE
     u.name = 'lmnooney';
 ```
 
-# 7.3 LEFT JOIN
+### 7.3 LEFT JOIN
 
 ```sql
 -- 注意，一些透過以下訪問所拿到的 record 未必擁有由 TABLE song 的值，
@@ -441,7 +441,7 @@ WHERE
     l.list_name IS NULL;
 ```
 
-# 7.4 SELF JOIN
+### 7.4 SELF JOIN
 SELF 並不是語法，而是一種撰寫 SQL Report 的技法，以下例子顯示如何與同一個 TABLE 相連創造出不同的 column 以製造出一個擁有不同意義的 TABLE。
 
 ```sql
@@ -561,6 +561,19 @@ WHERE list_id IN (
 
 ### 8.3. FROM DERIVED TABLE
 
+```sql
+SELECT
+    l.list_id,
+    COUNT(song_name)
+FROM
+    list AS l
+INNER JOIN
+    song AS s
+    ON s.list_id = l.list_id
+GROUP BY
+    l.list_id;
+```
+
 用 subquery 先來總結一個 Table，然後把它交給另一個 SELECT query 的 FROM 來做篩選。
 
 ```sql
@@ -578,8 +591,23 @@ FROM (
         ON s.list_id = l.list_id
     GROUP BY
         l.list_id
-)
-WHERE num_of_song >= 3;
+) list_sub_table
+WHERE list_sub_table.num_of_song >= 3;
+```
+
+```sql
+SELECT
+    user_id,
+    MAX(list_count)
+FROM (
+    SELECT
+        user_id,
+        COUNT(user_id) AS list_count
+    FROM
+        list
+    GROUP BY
+        user_id
+);
 ```
 
 其他常用 SQL 工具指令
