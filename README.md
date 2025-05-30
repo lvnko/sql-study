@@ -641,9 +641,12 @@ WHERE list_id IN (
 
 ### 8.5. CORRELATED SUBQUERY
 
-一般的 Sub Query 是以自身的邏輯及參數去把值找出來，跟上層的 Query 不會有直接關聯，但當上層 Query 的參數值被 Sub Query 取用，我們便稱這些 Query 做 Sub Query。
+一般的 Sub Query 是以自身的邏輯及參數去把值找出來，跟上層的 Query 不會有直接關聯，但當上層 Query 的參數值被 Sub Query 取用，我們便稱這些 Query 做 Sub Query。<br/>
+要注意的是，一般的 Sub Query 只執行一次便能把需要的值取出，但像 Correlated Sub Query 因為牽涉到上層 Query 的動態值，這樣它的執行次數便與上層 Query record 數目相等，也讓它效能比沒有 Correlation 的 Sub Query 差。<br/>
+因此，當有其他的 Query 方法能獲得同樣的結果，一般不建議用 Correlated Sub Query。
 
 ```sql
+-- 以下的例子是為列出公司內薪金高於平均水平的員工：
 SELECT
     name, position, salary
 FROM
@@ -662,7 +665,19 @@ WHERE
             e.position = e2.position
     );
 ```
-
+```sql
+-- 以下的例子是為列出公司內職位薪金平均值高於 180 的員工：
+SELECT
+    name, position
+FROM
+    employee e1
+WHERE EXISTS(
+    SELECT AVG(salary)
+    FROM employee e2
+    WHERE e1.position = e2.position
+    GROUP BY position HAVING AVG(salary) > 180
+);
+```
 其他常用 SQL 工具指令
 ```sql
 pragma table_info('table_name');
