@@ -597,17 +597,70 @@ WHERE list_sub_table.num_of_song >= 3;
 
 ```sql
 SELECT
-    user_id,
-    MAX(list_count)
+    name, email, createdAt
 FROM (
     SELECT
         user_id,
-        COUNT(user_id) AS list_count
-    FROM
-        list
-    GROUP BY
-        user_id
+        MAX(list_count)
+    FROM (
+        SELECT
+            user_id,
+            COUNT(user_id) AS list_count
+        FROM
+            list
+        GROUP BY
+            user_id
+    )
+) user_with_max_list_cnt
+INNER JOIN
+    user
+    ON user.user_id = user_with_max_list_cnt.user_id;
+```
+
+### 8.4. WHERE IN/NOT IN
+
+```sql
+SELECT list_name, description
+FROM list
+WHERE list_id IN (
+    SELECT
+        list_id /* 要注意這裡只能選一個欄位，如果輸入多個便會出錯 */
+    FROM (
+        SELECT
+            list_id,
+            COUNT(song_name) AS num_of_song
+        FROM
+            song
+        GROUP BY
+            list_id
+    )
+    WHERE
+        num_of_song >= 3
 );
+```
+
+### 8.5. CORRELATED SUBQUERY
+
+一般的 Sub Query 是以自身的邏輯及參數去把值找出來，跟上層的 Query 不會有直接關聯，但當上層 Query 的參數值被 Sub Query 取用，我們便稱這些 Query 做 Sub Query。
+
+```sql
+SELECT
+    name, position, salary
+FROM
+    employee e
+WHERE
+    e.salary > (
+        /*
+            這個 Sub Query 的目的是篩選出與上層 Query
+            當前 record 同 position 的平均薪金水平
+        */
+        SELECT
+            AVG(salary)
+        FROM
+            employee e2
+        WHERE -- 所以在這裡我們把上層 Query record 的 position 帶進來做比較
+            e.position = e2.position
+    );
 ```
 
 其他常用 SQL 工具指令
