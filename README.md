@@ -771,6 +771,9 @@ FROM
 WHERE
     condition;
 ```
+
+### 10.2 INSERT INTO SELECT 語法
+
 在閱讀 INSERT INTO SELECT 的 sql 時，我們要知道的是 SELECT 的目的是用來收集交給 INSERT 所需要的 VALUES 而寫的，它的結果往往是多筆的資料輸入。
 
 ```sql
@@ -805,7 +808,177 @@ LEFT JOIN
 -- 的 INSERT 執行都會被取消。
 ```
 
-## 11. 其他常用 SQL 工具指令
+## 11. UPDATE
+
+## 11.1. 格式：
+```sql
+UPDATE [LOW_PRIORITY] [IGNORE] table_name
+SET
+    column_name1 = expr1,
+    column_name2 = expr2,
+    ...
+[WHERE
+    condition]; -- 這裏要注意的是：一個沒有給 WHERE condition 的 UPDATE sql 是會對該 Table 的所有 record 進行 update。
+```
+### 11.2. 解析順序
+Table > WHERE > SET
+
+### 11.3. 一般實例
+```sql
+UPDATE user
+SET
+    createAt = datetime('now')
+WHERE user_id = 1;
+```
+```sql
+UPDATE user
+SET
+    name='threefishes',
+    email='threefishes@sqlite.com',
+    createdAt=datetime('now')
+WHERE user_id=1;
+```
+### 11.4. REPLACE
+```sql
+UPDATE user
+SET
+    email = REPLACE(email, '@sqlite.com', '@gmail.com');
+```
+### 11.5. UPDATE JOIN
+利用第二個表格 (TABLE) 的資料做為輔助或參考，決定如何更新本來表格中的值。
+<br/>
+這個功能在 Sqlite 上並不支援。
+### 11.5.1. 解析順序
+TABLE > JOIN TABLE > WHERE > SET 
+### 11.5.2. 實例
+```sql
+UPDATE song
+INNER JOIN
+    list
+    ON song.list_id = list.list_id
+SET
+    song.song_name = CONCAT(list.list_name, '-', song.song_name)
+WHERE
+    list.list_id = 0;
+``` 
+```sql
+UPDATE list
+LEFT JOIN
+    song ON
+    list.list_id = song.list_id
+SET
+    list.list_name = CONCAT('Empty - ', list.list_name)
+WHERE
+    song.song_name IS NULL;
+```
+
+
+## 12. DELETE
+## 12.1. 普通語法
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+```sql
+DELETE FROM song
+WHERE song_id = 20;
+```
+```sql
+DELETE FROM song
+ORDER BY song_name
+LIMIT 3;
+-- 當你在 sqlite 上執行以上的 DELETE SQL，你會獲得 syntax error。
+-- 但如果你用 Sub Query 也可以獲得同樣的結果，如下：
+DELETE FROM song
+WHERE
+    song.song_id IN (
+        SELECT song.song_id
+        FROM song
+        ORDER BY song_name
+        LIMIT 3
+    );
+```
+
+## 12.2. ON DELETE CASCADE
+[ user ] -> [ list ] -> [ song ]
+<br/>
+如上 user Table 與 list Table 的關係，list 的 record 透過 FOREIGN KEY, user_id, 去指定它所屬的 user record，但當我們 DELETE 任一在 list TABLE 擁有相連 user_id 的 user TABLE record，那麼剩下在 list TABLE 中的這些 record 就會變得沒有意義，因為它們將會是沒有所屬 user record 的 list record，為了避免這種情況，在創建 list TABLE 時我們會在指定 FOREIGN KEY 時加上 ON DELETE CASCADE 的語法，如下：
+```sql
+CREATE TABLE list (
+    list_id INT PRIMARY KEY,
+    list_name VARCHAR,
+    user_id INT,
+    description VARCHAR,
+    FOREIGN KEY(user_id)
+        REFERENCES user(user_id)
+        ON DELETE CASCADE -- 這裏指定，若所屬的 user record 被 DELETE 掉，在這個 TABLE 相連的 record 也會被 DELETE
+);
+```
+同理，若我們在 song TABLE 也做出同樣的設定 (ON DELETE CASCADE)，那麼當我們 DELETE user TABLE record 的時候，是有機會觸發另外兩個 TABLE 中的一些相連 record 被 DELETE 的。
+
+## 12.3. DELETE JOIN
+### 12.3.1 格式
+```sql
+DELETE FROM t1, t2
+FROM t1
+INNER JOIN t2 ON t1.key = t2.key
+WHERE condition;
+```
+### 12.3.2 解析順序
+TABLE > JOIN TABLE > WHERE
+<br/>
+要留意的是 DELETE JOIN 不能在 sqlite 上使用。
+
+### 12.3.3 INNER JOIN 實例
+```sql
+DELETE list, song
+FROM list
+INNER JOIN song
+ON list.list_id = song.list_id
+WHERE list.list_id = 0;
+```
+
+### 12.3.3 LEFT JOIN 實例
+```sql
+DELETE list
+FROM list
+LEFT JOIN song
+ON list.list_id = song.list_id
+WHERE song.song_id IS NULL;
+```
+
+## 13. TRANSACTION
+## 13.1. 基本語法
+```sql
+BEGIN TRANSACTION;
+-- 如果在 MySQL 應該用的指令應該是：START TRANSACTION;
+
+Update song_1
+Update song_2
+Update song_3
+
+COMMIT/ROLLBACK
+```
+
+```sql
+BEGIN TRANSACTION;
+UPDATE song SET song_name = 'update - ' || song_name WHERE song_id = 0;
+UPDATE song SET song_name = 'update - ' || song_name WHERE song_id = 1;
+COMMIT;
+
+BEGIN TRANSACTION;
+UPDATE song SET song_name = 'update - ' || song_name WHERE song_id = 2;
+UPDATE song SET song_id = 2 WHERE song_id = 3; -- Error: UNIQUE constraint failed: song-song_id
+ROLLBACK; -- 當執行到上一隻 UPDATE SQL 的時候，因為遇到了 Error，這時我們可以用 ROLLBACK 指令，取消所有 UPDATE 指令，讓 DB 回到執行前的樣子。
+```
+
+## 14. ALTER TABLE
+## 14.1. 新增 COLUMN
+## 14.2. 更改 COLUMN (名字/型別)
+## 14.3. 丟棄 COLUMN
+## 14.4. 改 TABLE 名字
+
+## 15. 其他常用 SQL 工具指令
 ```sql
 pragma table_info('table_name'); -- 列出 Table 的所有欄目及其型別
 DELETE FROM table; -- 刪除 Table 內所有 record
