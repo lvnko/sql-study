@@ -680,9 +680,9 @@ WHERE EXISTS(
 ```
 
 ## 9. CTE - Common Table Expression
-## 9.1. 解析順序
+### 9.1. 解析順序
 CTE > CTE .... CTE > SELECT/INSERT/UPDATE/DELETE/CREATE
-## 9.2. 實際例子
+### 9.2. 實際例子
 ```sql
 /*
 - 格式：
@@ -748,7 +748,7 @@ WHERE num_of_song >= 3;
 ```
 
 ## 10. INSERT
-### 10.1 普通語法
+### 10.1. 普通語法
 ```sql
 INSERT INTO table (c1, c2, c3)
 VALUES (v1, v2, v3);
@@ -761,7 +761,9 @@ VALUES
     ...
     (vn1, vn2, vn3);
 ```
-### 10.2 INSERT INTO SELECT 語法
+
+### 10.2. INSERT INTO SELECT 語法
+
 ```sql
 INSERT INTO table_name(column_list)
 SELECT
@@ -771,8 +773,6 @@ FROM
 WHERE
     condition;
 ```
-
-### 10.2 INSERT INTO SELECT 語法
 
 在閱讀 INSERT INTO SELECT 的 sql 時，我們要知道的是 SELECT 的目的是用來收集交給 INSERT 所需要的 VALUES 而寫的，它的結果往往是多筆的資料輸入。
 
@@ -810,7 +810,7 @@ LEFT JOIN
 
 ## 11. UPDATE
 
-## 11.1. 格式：
+### 11.1. 格式
 ```sql
 UPDATE [LOW_PRIORITY] [IGNORE] table_name
 SET
@@ -874,7 +874,7 @@ WHERE
 
 
 ## 12. DELETE
-## 12.1. 普通語法
+### 12.1. 普通語法
 ```sql
 DELETE FROM table_name
 WHERE condition;
@@ -899,7 +899,7 @@ WHERE
     );
 ```
 
-## 12.2. ON DELETE CASCADE
+### 12.2. ON DELETE CASCADE
 [ user ] -> [ list ] -> [ song ]
 <br/>
 如上 user Table 與 list Table 的關係，list 的 record 透過 FOREIGN KEY, user_id, 去指定它所屬的 user record，但當我們 DELETE 任一在 list TABLE 擁有相連 user_id 的 user TABLE record，那麼剩下在 list TABLE 中的這些 record 就會變得沒有意義，因為它們將會是沒有所屬 user record 的 list record，為了避免這種情況，在創建 list TABLE 時我們會在指定 FOREIGN KEY 時加上 ON DELETE CASCADE 的語法，如下：
@@ -916,20 +916,20 @@ CREATE TABLE list (
 ```
 同理，若我們在 song TABLE 也做出同樣的設定 (ON DELETE CASCADE)，那麼當我們 DELETE user TABLE record 的時候，是有機會觸發另外兩個 TABLE 中的一些相連 record 被 DELETE 的。
 
-## 12.3. DELETE JOIN
-### 12.3.1 格式
+### 12.3. DELETE JOIN
+#### 12.3.1. 格式
 ```sql
 DELETE FROM t1, t2
 FROM t1
 INNER JOIN t2 ON t1.key = t2.key
 WHERE condition;
 ```
-### 12.3.2 解析順序
+#### 12.3.2. 解析順序
 TABLE > JOIN TABLE > WHERE
 <br/>
 要留意的是 DELETE JOIN 不能在 sqlite 上使用。
 
-### 12.3.3 INNER JOIN 實例
+#### 12.3.3. INNER JOIN 實例
 ```sql
 DELETE list, song
 FROM list
@@ -938,7 +938,7 @@ ON list.list_id = song.list_id
 WHERE list.list_id = 0;
 ```
 
-### 12.3.3 LEFT JOIN 實例
+#### 12.3.4. LEFT JOIN 實例
 ```sql
 DELETE list
 FROM list
@@ -948,7 +948,7 @@ WHERE song.song_id IS NULL;
 ```
 
 ## 13. TRANSACTION
-## 13.1. 基本語法
+### 13.1. 基本語法
 ```sql
 BEGIN TRANSACTION;
 -- 如果在 MySQL 應該用的指令應該是：START TRANSACTION;
@@ -1044,7 +1044,7 @@ RENAME TO user_info;
 
 DESCRIBE user_info;
 ```
-### 14.5 差異
+### 14.5. 差異
 |   | MySQL | SQLite |
 | --- | --- | --- |
 | Rename Table | ✓ | ✓ |
@@ -1062,7 +1062,7 @@ DESCRIBE user_info;
 
 ## 15. 習作
 
-### 15.1 基礎需求
+### 15.1. 基礎需求
 - 找到一張專輯裡面的歌 - ORDER BY
 - 找到一首歌所屬的專輯跟創作者 - JOIN
 - 找到使用者 Liked Songs - CTE
@@ -1073,7 +1073,7 @@ DESCRIBE user_info;
 - 將歌單中的兩首歌調換顺序 - TRANSACTION
 - 發現原本設計的Table不完美或需求改變 - ALTER TABLE
 
-### 15.2 進階需求
+### 15.2. 進階需求
 - Your Library 頁面
     - 使用者取得擁有 Play list 和每個 Play list 裡的歌
     - 使用者取得所追蹤的 Album 和每個 Album 裡的歌
@@ -1083,12 +1083,12 @@ DESCRIBE user_info;
     - 取得創作者發表過的專輯
 - 使用者取得他的 Followers / Followings
 
-### 15.3 追加需求
+### 15.3. 追加需求
 - 使用者 Follow (使用者 / 專輯 / Public Playlist)
 - 使用者發佈歌單
 - 將一首歌加入/移除歌單
 
-## 16. 其他常用 SQL 工具指令
+### 16. 其他常用 SQL 工具指令
 ```sql
 pragma table_info('table_name'); -- 在 Sqlite 上列出 Table 的所有欄目及其型別
 Describe table_name; -- 在 MySQL 上列出 Table 的所有欄目及其型別
