@@ -973,14 +973,14 @@ ROLLBACK; -- 當執行到上一隻 UPDATE SQL 的時候，因為遇到了 Error�
 ```
 
 ## 14. ALTER TABLE
-## 14.1. 新增 COLUMN
-## 14.1.1. 基本語法
+### 14.1. 新增 COLUMN
+#### 14.1.1. 基本語法
 ```sql
 ALTER TABLE table_name
 ADD [COLUMN] column_name column_definition
 [FIRST|ALTER existing column];
 ```
-## 14.1.2. 實例
+#### 14.1.2. 實例
 ```sql
 ALTER TABLE user
 ADD COLUMN city varchar(15) AFTER name,
@@ -989,14 +989,14 @@ ADD COLUMN bio VARCHAR(255) AFTER email;
 
 DESCRIBE user;
 ```
-## 14.2. 更改 COLUMN (名字/型別)
-## 14.2.1. 基本語法
+### 14.2. 更改 COLUMN (名字/型別)
+#### 14.2.1. 基本語法
 ```sql
 ALTER TABLE table_name
 MODIFY COLUMN column_name column_definition
 [FIRST|ALTER existing column];
 ```
-## 14.2.2. 實例
+#### 14.2.2. 實例
 ```sql
 ALTER TABLE user
 MODIFY COLUMN name varchar(20);
@@ -1004,13 +1004,13 @@ MODIFY COLUMN name varchar(20);
 DESCRIBE user;
 ```
 
-## 14.2.3. 修改名字語法
+#### 14.2.3. 修改名字語法
 ```sql
 ALTER TABLE table_name
 CHANGE COLUMN original_name new_name column_definition
 [FIRST|ALTER column_name];
 ```
-## 14.2.4. 修改名字實例
+#### 14.2.4. 修改名字實例
 ```sql
 ALTER TABLE user
 CHANGE COLUMN name user_name varchar(20);
@@ -1018,33 +1018,33 @@ CHANGE COLUMN name user_name varchar(20);
 DESCRIBE user;
 ```
 
-## 14.3. 丟棄 COLUMN
-## 14.3.1. 基本語法
+### 14.3. 丟棄 COLUMN
+#### 14.3.1. 基本語法
 ```sql
 ALTER TABLE table_name
 DROP [COLUMN] column_name;
 ```
-## 14.3.2. 實例
+#### 14.3.2. 實例
 ```sql
 ALTER TABLE user
 DROP COLUMN updatedAt;
 
 DESCRIBE user;
 ```
-## 14.4. 改 TABLE 名字
-## 14.4.1. 基本語法
+### 14.4. 改 TABLE 名字
+#### 14.4.1. 基本語法
 ```sql
 ALTER TABLE table_name
 RENAME TO new_table_name;
 ```
-## 14.4.2. 實例
+#### 14.4.2. 實例
 ```sql
 ALTER TABLE user
 RENAME TO user_info;
 
 DESCRIBE user_info;
 ```
-## 14.5 差異
+### 14.5 差異
 |   | MySQL | SQLite |
 | --- | --- | --- |
 | Rename Table | ✓ | ✓ |
