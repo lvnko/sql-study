@@ -32,14 +32,14 @@
 
 ###  B.2 基礎需求
 - 找到一張專輯裡面的歌 - ORDER BY
-```sql
-SELECT
-    track_number,
-    name
-FROM song
-WHERE album_id = 2
-ORDER BY track_number;
-```
+    ```sql
+    SELECT
+        track_number,
+        name
+    FROM song
+    WHERE album_id = 2
+    ORDER BY track_number;
+    ```
 - 找到一首歌所屬的專輯跟創作者 - JOIN
 - 找到使用者 Liked Songs - CTE
 - 找到一個創作者的月總觀看數/找到月總觀看數超過一百萬的發燒創作者 - GROUP BY / HAVING
