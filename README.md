@@ -37,7 +37,7 @@
         track_number,
         name
     FROM song
-    WHERE album_id = 2
+    WHERE album_id = 2 -- 這裏需要用該專輯的 album.id (e.g. 2) 來做 song.album_id 篩選條件
     ORDER BY track_number;
     ```
 - 找到一首歌所屬的專輯跟創作者 - JOIN
