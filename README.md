@@ -305,6 +305,7 @@
     - 使用者取得擁有 Play list 和每個 Play list 裡的歌
         ```sql
         -- 假設使用者為 "Joyce Cook" (user.id:3)
+        
         SELECT
             pl.name AS playlist_name,
             sg.name AS song_name
@@ -314,7 +315,8 @@
         LEFT JOIN song AS sg
             ON sg.id = et.song_id
         WHERE pl.user_id = 3;
-        /*
+        
+        /* 結果：
         +--------------------------------------+--------------------------+
         | playlist_name                        | song_name                |
         +--------------------------------------+--------------------------+
@@ -330,6 +332,33 @@
         */
         ```
     - 使用者取得所追蹤的 Album 和每個 Album 裡的歌
+        ```sql
+        -- 假設使用者為 "Jamie Ellsworth" (user.id:44)
+
+        SELECT
+            alb.title AS user_following_album_title,
+            sng.name AS song_in_album
+        FROM user_added_album AS ulb
+        LEFT JOIN album AS alb
+            ON alb.id = ulb.album_id
+        LEFT JOIN song AS sng
+            ON sng.album_id = alb.id
+        WHERE ulb.user_id = 44;
+
+        /* 結果：
+        +------------------------------------+-----------------------+
+        | user_following_album_title         | song_in_album         |
+        +------------------------------------+-----------------------+
+        | Consequncias De Um Corao Machucado | Cat's Meow            |
+        | Consequncias De Um Corao Machucado | Generate Some Action  |
+        | Consequncias De Um Corao Machucado | Rap Is Outta Control  |
+        | Consequncias De Um Corao Machucado | Tetris 2020           |
+        | ...                                | ...                   |
+        | Metal Health                       | Retro Dance Record    |
+        | Metal Health                       | Rock with You         |
+        +------------------------------------+-----------------------+
+        */
+        ```
     - 使用者取得 Liked Playlist 和其中的歌
 - Artist 頁面
     - 取得創作者 TOP 5 歌
