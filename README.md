@@ -13,9 +13,9 @@
     我為答題在 Spotify 上爬的一些資料，可以用來驗證回答，也可以用來做練習與測試
 
 ## B. 習作
-以介紹習作
+課程最後以 Spotify 為需求藍本，針對其功能給出了一系列的問題，我在本章節給出解答：
 ### B.1 開始步驟
-1. 使用 ``/materials/exercise_sql/`` 裡的 .sql 檔案建立 database，順序如下：
+1. 在 **MySQL (v8.0)** 上使用 ``/materials/exercise_sql/`` 裡的 .sql 檔案建立 database，順序如下：
     > 1. spotify_clone_artist.sql
     > 2. spotify_clone_album.sql
     > 3. spotify_clone_song.sql
@@ -27,8 +27,7 @@
     > 9. spotify_clone_user_added_playlist.sql
     > 10. spotify_clone_user_added_album.sql
     > 11. spotify_clone_user_liked_song.sql
-
-2. 執行以下習作回答的 SQL
+2. 在 MySQL Command Line console/terminal 上執行以下 ... SQL 回答做驗證或測試。
 ###  B.2 基礎需求
 - 找到一張專輯裡面的歌 - ORDER BY
 - 找到一首歌所屬的專輯跟創作者 - JOIN
