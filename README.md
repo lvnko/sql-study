@@ -9,7 +9,7 @@
     為了輔佐筆記中的 SQL 學習，可以在這個檔案夾裡的 SQLite DB 來做練習
 - **實作練習** [``/README.md#b-習作``](#b-習作)：<br/>
     課程最後有提到一些習作題目，我把回答整理在本文的 B 章節中
-- **實作材料** [``/materials/exercise_sql``](/materials/exercise_sql/)：<br/>
+- **實作材料** [``/materials/exercise_sql/*``](/materials/exercise_sql/)：<br/>
     我為答題在 Spotify 上爬的一些資料，可以用來驗證回答，也可以用來做練習與測試
 
 ## B. 習作
@@ -27,7 +27,7 @@
     > 9. spotify_clone_user_added_playlist.sql
     > 10. spotify_clone_user_added_album.sql
     > 11. spotify_clone_user_liked_song.sql
-2. 在 MySQL Command Line console/terminal 上執行以下 ... SQL 回答做驗證或測試。
+2. 在 MySQL Command Line console/terminal 上執行 [B.2](#b2-基礎需求)、[B.3](#b3-進階需求) 與 [B.4](#b4-追加需求) 中的 SQL 回答做驗證或測試。
 ###  B.2 基礎需求
 - 找到一張專輯裡面的歌 - ORDER BY
 - 找到一首歌所屬的專輯跟創作者 - JOIN
