@@ -3,9 +3,10 @@
 
 ## A. 概覽
 (介紹專案檔案)
-- **學習筆記**：關於不同 SQL 語法及用法的筆記，總共分了 14 個章節 [[連結](/docs/overview.md)]
-- **學習檔案**：為了輔佐學習筆記中的 SQL 做練習，可以在 ``/materials/sqlite_db/*`` 中找到一些 SQLite 的 DB 來做測試 [[連結](/materials/sqlite_db/)]
-- **實作練習**：課程最後有提到一些習作題目，可以在本文的 B 章節中找到詳文 [[連結](#b-習作)]
+- **學習筆記** ``/docs/overview.md``：關於不同 SQL 語法及用法的筆記，總共分了 14 個章節 [[連結](/docs/overview.md)]
+- **學習檔案** ``/materials/sqlite_db/*``：為了輔佐筆記中的 SQL 學習，可以在這個檔案夾裡的 SQLite DB 來做練習 [[連結](/materials/sqlite_db/)]
+- **實作練習** ``/README.md#b-習作``：課程最後有提到一些習作題目，我把回答整理在本文的 B 章節中 [[快轉](#b-習作)]
+- **實作材料** ``/materials/exercise_sql``：我為答題在 Spotify 上爬的一些資料，可以用來驗證回答，也可以用來做練習與測試 [[連結](/materials/exercise_sql/)]
 
 ## B. 習作
 以介紹習作
