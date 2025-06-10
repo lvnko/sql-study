@@ -14,6 +14,7 @@
 
 ## B. 習作
 課程最後以 Spotify 為需求藍本，針對其功能給出了一系列的問題，我在本章節給出解答：
+
 ### B.1 開始步驟
 1. 在 **MySQL (v8.0)** 上使用 ``/materials/exercise_sql/`` 裡的 .sql 檔案建立 database，順序如下：
     > 1. spotify_clone_artist.sql
@@ -28,8 +29,17 @@
     > 10. spotify_clone_user_added_album.sql
     > 11. spotify_clone_user_liked_song.sql
 2. 在 MySQL Command Line console/terminal 上執行 [B.2](#b2-基礎需求)、[B.3](#b3-進階需求) 與 [B.4](#b4-追加需求) 中的 SQL 回答做驗證或測試。
+
 ###  B.2 基礎需求
 - 找到一張專輯裡面的歌 - ORDER BY
+```sql
+SELECT
+    track_number,
+    name
+FROM song
+WHERE album_id = 2
+ORDER BY track_number;
+```
 - 找到一首歌所屬的專輯跟創作者 - JOIN
 - 找到使用者 Liked Songs - CTE
 - 找到一個創作者的月總觀看數/找到月總觀看數超過一百萬的發燒創作者 - GROUP BY / HAVING
