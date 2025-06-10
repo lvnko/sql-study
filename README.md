@@ -360,6 +360,34 @@
         */
         ```
     - 使用者取得 Liked Playlist 和其中的歌
+        ```sql
+        -- 假設使用者為 "Paul Roberts" (user.id:35)
+
+        SELECT
+            pl.name AS user_liked_playlist,
+            sng.name AS song_in_playlist
+        FROM user_added_playlist AS upl
+        LEFT JOIN playlist AS pl
+            ON pl.id = upl.playlist_id
+        LEFT JOIN playlist_entry AS pl_ent
+            ON pl_ent.playlist_id = pl.id
+        LEFT JOIN song AS sng
+            ON sng.id = pl_ent.song_id
+        WHERE upl.user_id = 35;
+
+        /* 結果：
+        +---------------------------------------------+------------------------+
+        | user_liked_playlist                         | song_in_playlist       |
+        +---------------------------------------------+------------------------+
+        | ABRI MINHA BBLIA EM JOAO 20 / Vitor Santana | The Interview          |
+        | ABRI MINHA BBLIA EM JOAO 20 / Vitor Santana | A Gerao Romntica       |
+        | ABRI MINHA BBLIA EM JOAO 20 / Vitor Santana | Lost Generation        |
+        | ...                                         | ...                    |
+        | U2 - As Melhores                            | Rolling in the Deep    |
+        | U2 - As Melhores                            | Da Beginning of da End |
+        +---------------------------------------------+------------------------+
+        */
+        ```
 - Artist 頁面
     - 取得創作者 TOP 5 歌
     - 取得創作者發表過的專輯
