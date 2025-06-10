@@ -25,8 +25,8 @@
     > 7. spotify_clone_user_follower.sql
     > 8. spotify_clone_artist_follower.sql
     > 9. spotify_clone_user_added_playlist.sql
-    > 9. spotify_clone_user_added_album.sql
-    > 9. spotify_clone_user_liked_song.sql
+    > 10. spotify_clone_user_added_album.sql
+    > 11. spotify_clone_user_liked_song.sql
 
 2. 執行以下習作回答的 SQL
 ###  B.2 基礎需求
