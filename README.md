@@ -1,11 +1,14 @@
-# Week #028 ~ #029
-初探 SQL
+#### Week #028 ~ #029
+# 初探 SQL
 
 ## A. 概覽
 (介紹專案檔案)
+- **學習筆記**：關於不同 SQL 語法及用法的筆記，總共分了 14 個章節 [[連結](/docs/overview.md)]
+- **學習檔案**：為了輔佐學習筆記中的 SQL 做練習，可以在 ``/materials/sqlite_db/*`` 中找到一些 SQLite 的 DB 來做測試 [[連結](/materials/sqlite_db/)]
+- **實作練習**：課程最後有提到一些習作題目，可以在本文的 B 章節中找到詳文 [[連結](#b-習作)]
 
 ## B. 習作
-介紹習作
+以介紹習作
 ### 開始步驟
 1. 使用 /materials/exercise_sql/ 裡的 .sql 檔案建立 database
 2. 執行以下習作回答的 SQL
