@@ -250,23 +250,23 @@
     -- Step 0: 打開 TRANSACTION 
     START TRANSACTION;
 
-    -- Step 1: Store the order_number of id 362 in a variable
+    -- Step 1: 將 id 為 362 的 order_number 儲存到變數中
     SELECT @order_362 := order_number FROM playlist_entry WHERE id = 362 AND playlist_id = 1;
 
-    -- Step 2: Store the order_number of id 714 in a variable
+    -- Step 2: 將 id 為 714 的 order_number 儲存到變數中
     SELECT @order_714 := order_number FROM playlist_entry WHERE id = 714 AND playlist_id = 1;
 
-    -- Step 3: Update id 362's order_number to a temporary value to avoid constraint violation
+    -- Step 3: 更新 id 為 362 的 order_number 為臨時值以避免違反約束
     UPDATE playlist_entry
     SET order_number = -1
     WHERE id = 362 AND playlist_id = 1;
 
-    -- Step 4: Update id 714's order_number to the stored value of id 362
+    -- Step 4: 將 id 為 714 的 order_number 更新為 id 為 362 的儲存值
     UPDATE playlist_entry
     SET order_number = @order_362
     WHERE id = 714 AND playlist_id = 1;
 
-    -- Step 5: Update id 362's order_number to the stored value of id 714
+    -- Step 5: 將 id 為 362 的 order_number 更新為 id 為 714 的儲存值
     UPDATE playlist_entry
     SET order_number = @order_714
     WHERE id = 362 AND playlist_id = 1;
@@ -292,18 +292,43 @@
     ```
 
 - 發現原本設計的Table不完美或需求改變 - ``ALTER TABLE``
-```sql
+    ```sql
+    -- 假設我們想把原本在 user table 中的 bio column 字串容量加大
+    -- 從原來的 varchar(200) 限制改到 varchar(500)
 
-
-ALTER TABLE user
-MODIFY COLUMN bio varchar(500);
-
-
-```
+    ALTER TABLE user
+    MODIFY COLUMN bio varchar(500);
+    ```
 
 ### B.3. 進階需求
 - Your Library 頁面
     - 使用者取得擁有 Play list 和每個 Play list 裡的歌
+        ```sql
+        -- 假設使用者為 "Joyce Cook" (user.id:3)
+        SELECT
+            pl.name AS playlist_name,
+            sg.name AS song_name
+        FROM playlist AS pl
+        LEFT JOIN playlist_entry AS et
+            ON et.playlist_id = pl.id
+        LEFT JOIN song AS sg
+            ON sg.id = et.song_id
+        WHERE pl.user_id = 3;
+        /*
+        +--------------------------------------+--------------------------+
+        | playlist_name                        | song_name                |
+        +--------------------------------------+--------------------------+
+        | Bts antigas pq so as melhores, bjos  | What Is It? (Excuse Me)  |
+        | Bts antigas pq so as melhores, bjos  | Dont Look Back in Anger  |
+        | Bts antigas pq so as melhores, bjos  | Crossover                |
+        | Bts antigas pq so as melhores, bjos  | Don't Look Back in Anger |
+        | ...                                  | ...                      |
+        | Vale Tudo (2025) Trilha Sonora       | Maktub                   |
+        | Vale Tudo (2025) Trilha Sonora       | Rock On                  |
+        +--------------------------------------+--------------------------+
+        26 rows in set (0.01 sec)
+        */
+        ```
     - 使用者取得所追蹤的 Album 和每個 Album 裡的歌
     - 使用者取得 Liked Playlist 和其中的歌
 - Artist 頁面
