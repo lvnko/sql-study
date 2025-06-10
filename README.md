@@ -390,7 +390,33 @@
         ```
 - Artist 頁面
     - 取得創作者 TOP 5 歌
+        ```sql
+        -- 假設創作者為 "James Fortenberry" (artist.id:5)
+
+        SELECT sng.name, sng.monthly_plays
+        FROM artist AS art
+        LEFT JOIN album AS alb
+            ON alb.artist_id = art.id
+        LEFT JOIN song AS sng
+            ON sng.album_id = alb.id
+        WHERE art.id = 5
+        ORDER BY sng.monthly_plays DESC
+        LIMIT 5;
+
+        /* 結果：
+        +-------------------------+---------------+
+        | name                    | monthly_plays |
+        +-------------------------+---------------+
+        | My Generation           |     998014141 |
+        | Radio 3                 |     899633899 |
+        | Crossover               |     778678929 |
+        | Marte                   |     768292373 |
+        | Love Will Tear Us Apart |     762172103 |
+        +-------------------------+---------------+
+        */
+        ```
     - 取得創作者發表過的專輯
+    
 - 使用者取得他的 Followers / Followings
 
 ### B.4. 追加需求
