@@ -1,8 +1,8 @@
 #### Week #028 ~ #029
 # 初探 SQL
 
-## A. 概覽
-(介紹專案檔案)
+## A. 專案檔案概覽
+關於本專案的檔案分佈可以參考以下簡錄：
 - **學習筆記** [``/docs/overview.md``](/docs/overview.md)：<br/>
     關於不同 SQL 語法及用法的筆記，總共分了 14 個章節
 - **學習檔案** [``/materials/sqlite_db/*``](/materials/sqlite_db/)：<br/>
