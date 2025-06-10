@@ -60,6 +60,7 @@
     +--------------+----------------------------------------------+
     */
     ```
+
 - 找到一首歌所屬的專輯跟創作者 - ``JOIN``
     ```sql
     -- 假設我們要找專輯與創作者的歌曲為 "Don't Speak"，其在 song table 中的 id 為 170：
@@ -84,6 +85,7 @@
     +---------+-------------+-------------+-----------------+
     */
     ```
+
 - 找到使用者 Liked Songs - ``CTE / Subquery``
     ```sql
     -- 假設使用者為 "Emily Shelly" 其在 user table 中的 id 為 20：
@@ -116,6 +118,7 @@
     257 rows in set (0.00 sec)
     */
     ```
+
 - 找到一個創作者的月總觀看數 - ``GROUP BY``
 
     ```sql
@@ -141,6 +144,7 @@
     +-----------+--------------+----------------------------+
     */
     ```
+
 - 找到月總觀看數超過一百萬的發燒創作者 - ``GROUP BY ... HAVING``
     ```sql
     -- 考慮我這次準備的資料量比較龐大，月總播放數動輒超過一百億
@@ -169,9 +173,10 @@
     +-----------+-----------------+----------------------------+
     */
     ```
+
 - 使用者對一首歌按愛心 - ``INSERT``
     ```sql
-    -- 假設使用者 "Wallace Evans" (user.id:2) 對
+    -- 假設使用者 "Wallace Evans" (user.id:27) 對
     -- 歌曲 "Our Generation" (song.id:204) 按了愛心
 
     INSERT INTO
@@ -187,18 +192,113 @@
     -- 原因：因為考慮到一個用戶是沒有辦法重複對同一首歌加愛心，
     -- 因此我設定了 UNIQUE(song_id, user_id) 的 CONSTRAINT
     ```
-- 創作者更新封面圖片和自我介紹 - ``UPDATE``
-```sql
 
-```
-- 創作者下架專輯 - DELETE
-```sql
-```
+- 創作者更新封面圖片和自我介紹 - ``UPDATE``
+    ```sql
+    -- 假設使用者為 "Helen Abbott" (user.id:2)
+
+    UPDATE user
+    SET
+        profile_pic='https://pbs.twimg.com/profile_images/978932102895951878/8By0mcHO_400x400.jpg',
+        bio='搖滾Electronic Music Producer & DJ'
+    WHERE id=2;
+
+    /* 結果：
+    Query OK, 1 row affected (0.02 sec)
+    Rows matched: 1  Changed: 1  Warnings: 0
+    */
+    ```
+
+- 創作者下架專輯 - ``DELETE``
+    ```sql
+    -- 假設創作者想要下架的專輯是 "Ain't No Sunshine (feat. Jasmine Pace)" (album.id:42)
+    -- 該專輯內收錄了一首歌 "Ghost of You" (song.id:326)
+
+    DELETE FROM album
+    WHERE id = 42;
+
+    /* 結果：
+    Query OK, 1 row affected (0.01 sec)
+
+    -- 該專輯刪除後，若再去執行查詢已找不到
+    mysql> select * from album where id = 42;
+    Empty set (0.00 sec)
+
+    -- 原先在該專輯內的歌曲 "Ghost of You"，也一樣找不到了
+    mysql> select * from song where id = 326;
+    Empty set (0.00 sec)
+    */
+    ```
+
 - 將歌單中的兩首歌調換顺序 - ``TRANSACTION``
-```sql
-```
+    ```sql
+    /* 在歌單 "BTS AS MELHORES 💜" 中有以下 5 首歌：
+    mysql> SELECT * FROM playlist_entry WHERE playlist_id = 1 ORDER BY order_number;
+    +-----+-------------+---------+--------------+
+    | id  | playlist_id | song_id | order_number |
+    +-----+-------------+---------+--------------+
+    | 148 |           1 |     377 |            0 |
+    | 362 |           1 |      42 |            1 | <-
+    | 680 |           1 |     492 |            2 |
+    | 714 |           1 |      38 |            3 | <-
+    | 949 |           1 |     474 |            4 |
+    +-----+-------------+---------+--------------+
+    -- 假設我們要把第二首 (order_number:1, id:362) 
+    -- 跟第四首歌 (order_number:3, id:714) 的順序調換
+    */
+
+    -- Step 0: 打開 TRANSACTION 
+    START TRANSACTION;
+
+    -- Step 1: Store the order_number of id 362 in a variable
+    SELECT @order_362 := order_number FROM playlist_entry WHERE id = 362 AND playlist_id = 1;
+
+    -- Step 2: Store the order_number of id 714 in a variable
+    SELECT @order_714 := order_number FROM playlist_entry WHERE id = 714 AND playlist_id = 1;
+
+    -- Step 3: Update id 362's order_number to a temporary value to avoid constraint violation
+    UPDATE playlist_entry
+    SET order_number = -1
+    WHERE id = 362 AND playlist_id = 1;
+
+    -- Step 4: Update id 714's order_number to the stored value of id 362
+    UPDATE playlist_entry
+    SET order_number = @order_362
+    WHERE id = 714 AND playlist_id = 1;
+
+    -- Step 5: Update id 362's order_number to the stored value of id 714
+    UPDATE playlist_entry
+    SET order_number = @order_714
+    WHERE id = 362 AND playlist_id = 1;
+
+    -- Step 6: 查詢改變過後結果是否跟想要的一樣
+    SELECT * FROM playlist_entry
+    WHERE playlist_id = 1 ORDER BY order_number;
+    /*
+    +-----+-------------+---------+--------------+
+    | id  | playlist_id | song_id | order_number |
+    +-----+-------------+---------+--------------+
+    | 148 |           1 |     377 |            0 |
+    | 714 |           1 |      38 |            1 | <-
+    | 680 |           1 |     492 |            2 |
+    | 362 |           1 |      42 |            3 | <-
+    | 949 |           1 |     474 |            4 |
+    +-----+-------------+---------+--------------+
+    -- 可以發現歌曲 362 與 714 的位置已經調換！
+    */
+
+    -- Step 7: COMMIT 所有指令，完成歌單歌曲調換顺序動作
+    COMMIT;
+    ```
+
 - 發現原本設計的Table不完美或需求改變 - ``ALTER TABLE``
 ```sql
+
+
+ALTER TABLE user
+MODIFY COLUMN bio varchar(500);
+
+
 ```
 
 ### B.3. 進階需求
