@@ -19,6 +19,14 @@
     > 1. spotify_clone_artist.sql
     > 2. spotify_clone_album.sql
     > 3. spotify_clone_song.sql
+    > 4. spotify_clone_user.sql
+    > 5. spotify_clone_playlist.sql
+    > 6. spotify_clone_playlist_entry.sql
+    > 7. spotify_clone_user_follower.sql
+    > 8. spotify_clone_artist_follower.sql
+    > 9. spotify_clone_user_added_playlist.sql
+    > 9. spotify_clone_user_added_album.sql
+    > 9. spotify_clone_user_liked_song.sql
 
 2. 執行以下習作回答的 SQL
 ###  B.2 基礎需求
