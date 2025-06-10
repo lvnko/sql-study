@@ -425,6 +425,7 @@
         FROM album AS alb
         WHERE alb.artist_id = 5
         ORDER BY alb.created_at DESC;
+        
         /* 結果：
         +----------------------------------+---------------------+
         | album_title                      | album_relase_time   |
@@ -436,7 +437,50 @@
         */
         ```
 
-- 使用者取得他的 Followers / Followings
+    - 使用者取得他的 Followers / Followings
+        ```sql
+        -- 假設創作者為 "Sharon Partain" (artist.id:16)
+
+        SELECT fr.name AS follower_name
+        FROM user_follower AS ufr
+        LEFT JOIN user AS fr
+            ON fr.id = ufr.follower_id
+        WHERE ufr.user_id = 16;
+
+        /* 使用者的 followers 結果：
+        +------------------+
+        | follower_name    |
+        +------------------+
+        | Charles Hughes   |
+        | Helen Abbott     |
+        | Joyce Cook       |
+        | Betty Little     |
+        | ...              |
+        | Candice Dubinsky |
+        | Victoria Clines  |
+        +------------------+
+        */
+
+        SELECT fg.name AS following_name
+        FROM user_follower AS ufg
+        LEFT JOIN user AS fg
+            ON fg.id = ufg.user_id
+        WHERE ufg.follower_id = 16;
+
+        /* 使用者取得期 followings 的結果：
+        +--------------------+
+        | following_name     |
+        +--------------------+
+        | Eduardo Bode       |
+        | Thomas Vanhofwegen |
+        | Paul Roberts       |
+        | Helen Abbott       |
+        | ...                |
+        | Victoria Clines    |
+        | Mary Schrunk       |
+        +--------------------+
+        */
+        ```
 
 ### B.4. 追加需求
 - 使用者 Follow (使用者 / 專輯 / Public Playlist)
