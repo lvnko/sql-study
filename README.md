@@ -84,7 +84,7 @@
     +---------+-------------+-------------+-----------------+
     */
     ```
-- 找到使用者 Liked Songs - CTE / Subquery
+- 找到使用者 Liked Songs - ``CTE / Subquery``
     ```sql
     -- 假設使用者為 "Emily Shelly" 其在 user table 中的 id 為 20：
 
@@ -100,25 +100,75 @@
     );
 
     /* 結果：
-    +---------+-----------------------------------------------------------------------------------+
-    | song_id | song_name                                                                         |
-    +---------+-----------------------------------------------------------------------------------+
-    |     341 | When The Music Stops - Live                                                       |
-    |     237 | I Used To Love H.E.R.                                                             |
-    |      27 | Funk You Up - Long Version                                                        |
-    |     406 | Everything Now                                                                    |
-    |      18 | Late Night Feelings                                                               |
-    |     292 | Generations                                                                       |
-    |     ... | ...                                                                               |
-    |     221 | Melmanos Annimos                                                                |
-    |     254 | Bad Guy                                                                           |
-    +---------+-----------------------------------------------------------------------------------+
+    +---------+---------------------------------+
+    | song_id | song_name                       |
+    +---------+---------------------------------+
+    |     341 | When The Music Stops - Live     |
+    |     237 | I Used To Love H.E.R.           |
+    |      27 | Funk You Up - Long Version      |
+    |     406 | Everything Now                  |
+    |      18 | Late Night Feelings             |
+    |     292 | Generations                     |
+    |     ... | ...                             |
+    |     221 | Melmanos Annimos                |
+    |     254 | Bad Guy                         |
+    +---------+---------------------------------+
     257 rows in set (0.00 sec)
     */
-```
-- 找到一個創作者的月總觀看數/找到月總觀看數超過一百萬的發燒創作者 - GROUP BY / HAVING
-```sql
-```
+    ```
+- 找到一個創作者的月總觀看數 - ``GROUP BY``
+
+    ```sql
+    -- 假設指定的創作者是 "Taylor Swift"，她在 artist table 中的 id 為 4：
+
+    SELECT
+        at.id AS artist_id,
+        at.name AS artist_name,
+        SUM(sg.monthly_plays) AS artist_total_monthly_plays
+    FROM artist AS at
+    INNER JOIN album AS ab
+        ON ab.artist_id = at.id
+    INNER JOIN song AS sg
+        ON sg.album_id = ab.id
+    WHERE at.id = 4
+    GROUP BY at.id, at.name;
+
+    /* 結果：
+    +-----------+--------------+----------------------------+
+    | artist_id | artist_name  | artist_total_monthly_plays |
+    +-----------+--------------+----------------------------+
+    |         4 | Taylor Swift |                22531986749 |
+    +-----------+--------------+----------------------------+
+    */
+    ```
+- 找到月總觀看數超過一百萬的發燒創作者 - ``GROUP BY ... HAVING``
+    ```sql
+    -- 我這次準備的資料量比較龐大，月總播放數動輒超過一百億
+    -- 因此，我把月總播放數超過 一百萬 的條件更改為：兩百億 (20,000,000,000)
+
+    SELECT
+        at.id AS artist_id,
+        at.name AS artist_name,
+        SUM(sg.monthly_plays) AS artist_total_monthly_plays
+    FROM artist AS at
+    INNER JOIN album AS ab
+        ON ab.artist_id = at.id
+    INNER JOIN song AS sg
+        ON sg.album_id = ab.id
+    GROUP BY at.id, at.name
+    HAVING artist_total_monthly_plays >= 20000000000;
+
+    /* 結果：
+    +-----------+-----------------+----------------------------+
+    | artist_id | artist_name     | artist_total_monthly_plays |
+    +-----------+-----------------+----------------------------+
+    |         2 | 2Pac            |                23614153105 |
+    |         4 | Taylor Swift    |                22531986749 |
+    |         8 | Top Drawer      |                24296851581 |
+    |        11 | William Mullins |                22348466270 |
+    +-----------+-----------------+----------------------------+
+    */
+    ```
 - 使用者對一首歌按愛心 - INSERT
 ```sql
 ```
