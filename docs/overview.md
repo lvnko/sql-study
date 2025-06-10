@@ -19,5 +19,6 @@
 - [**11-delete.md**](11-delete.md): 學習如何從資料庫表格中刪除資料。
 - [**12-transaction.md**](12-transaction.md): 介紹資料庫事務（Transaction）的概念和使用，確保資料操作的原子性、一致性、隔離性和持久性。
 - [**13-alter_table.md**](13-alter_table.md): 探討如何使用 `ALTER TABLE` 語句修改資料庫表格的結構。
+- [**14-others.md**](14-others.md): 整理了其他有用的 SQL 指令。
 
 透過這份筆記，您將能夠逐步建立起扎實的 SQL 基礎，並掌握在實際應用中高效操作資料庫的能力。

@@ -1,3 +1,5 @@
+[回到概覽](overview.md) | [上一章](10-update.md) | [下一章](12-transaction.md)
+
 ## 11. DELETE
 ### 11.1. 普通語法
 ```sql

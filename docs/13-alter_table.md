@@ -1,3 +1,5 @@
+[回到概覽](overview.md) | [上一章](12-transaction.md)
+
 ## 13. ALTER TABLE
 ### 13.1. 新增 COLUMN
 #### 13.1.1. 基本語法

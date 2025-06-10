@@ -1,3 +1,5 @@
+[回到概覽](overview.md) | [上一章](08-cte.md) | [下一章](10-update.md)
+
 ## 9. INSERT
 ### 9.1. 普通語法
 ```sql
