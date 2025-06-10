@@ -10,7 +10,7 @@
 - **實作練習** [``/README.md#b-習作``](#b-習作)：<br/>
     課程最後有提到一些習作題目，我把回答整理在本文的 B 章節中
 - **實作材料** [``/materials/exercise_sql/*``](/materials/exercise_sql/)：<br/>
-    我為答題在 Spotify 上爬的一些資料，可以用來驗證回答，也可以用來做練習與測試
+    我為答題在 Spotify 上爬的一些資料，雖然它們都是以無序 (Random) 的方式做收集，但是可以用來驗證回答，與做練習測試之用
 
 ## B. 習作
 課程最後以 Spotify 為需求藍本，針對其功能給出了一系列的問題，我在本章節給出解答：
@@ -31,23 +31,67 @@
 2. 在 MySQL Command Line console/terminal 上執行 [B.2](#b2-基礎需求)、[B.3](#b3-進階需求) 與 [B.4](#b4-追加需求) 中的 SQL 回答做驗證或測試。
 
 ###  B.2 基礎需求
-- 找到一張專輯裡面的歌 - ORDER BY
+- 找到一張專輯裡面的歌 - ``ORDER BY``
     ```sql
+    -- 假設我們要找歌的專輯為 "A New Day"，其在 album table 中的 id 為 2：
     SELECT
         track_number,
         name
     FROM song
-    WHERE album_id = 2 -- 這裏需要用該專輯的 album.id (e.g. 2) 來做 song.album_id 篩選條件
+    WHERE album_id = 2 -- 這裏需要用該專輯的 album.id (e.g. 2) 來做 song.album_id 的篩選條件值
     ORDER BY track_number;
+    /* 結果：
+    +--------------+----------------------------------------------+
+    | track_number | name                                         |
+    +--------------+----------------------------------------------+
+    |            0 | Hello                                        |
+    |            1 | Black Curtains                               |
+    |            2 | I'm Awesome (Remix) [feat. Mac Lethal]       |
+    |            3 | Rock & Roll (Shouts Out Back To The Rappers) |
+    |            4 | ??????                                       |
+    |            5 | Trying for Kicks - 2002 Remaster             |
+    |            6 | Sunshine In You                              |
+    |            7 | We Got The Beat                              |
+    |            8 | To Live & Die In L.A.                        |
+    |            9 | This Is My Life (feat. Lmfao)                |
+    +--------------+----------------------------------------------+
+    */
     ```
 - 找到一首歌所屬的專輯跟創作者 - JOIN
+```sql
+SELECT
+    song.id AS song_id,
+    song.name AS song_name,
+    album.title AS album_title,
+    artist.name AS artist_name
+FROM song
+LEFT JOIN album
+    ON song.album_id = album.id
+LEFT JOIN artist
+    ON artist.id = album.artist_id
+WHERE song.id = 170;
+```
 - 找到使用者 Liked Songs - CTE
+```sql
+```
 - 找到一個創作者的月總觀看數/找到月總觀看數超過一百萬的發燒創作者 - GROUP BY / HAVING
+```sql
+```
 - 使用者對一首歌按愛心 - INSERT
+```sql
+```
 - 創作者更新封面圖片和自我介紹 - Update
+```sql
+```
 - 創作者下架專輯 - DELETE
+```sql
+```
 - 將歌單中的兩首歌調換顺序 - TRANSACTION
+```sql
+```
 - 發現原本設計的Table不完美或需求改變 - ALTER TABLE
+```sql
+```
 
 ### B.3. 進階需求
 - Your Library 頁面
