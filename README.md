@@ -16,9 +16,9 @@
 以介紹習作
 ### B.1 開始步驟
 1. 使用 ``/materials/exercise_sql/`` 裡的 .sql 檔案建立 database，順序如下：
-    > spotify_clone_artist.sql
-    > spotify_clone_album.sql
-    > spotify_clone_song.sql
+> - spotify_clone_artist.sql
+    - spotify_clone_album.sql
+    - spotify_clone_song.sql
 
 2. 執行以下習作回答的 SQL
 ###  B.2 基礎需求
