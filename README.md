@@ -848,9 +848,11 @@ SET
 利用第二個表格 (TABLE) 的資料做為輔助或參考，決定如何更新本來表格中的值。
 <br/>
 這個功能在 Sqlite 上並不支援。
-### 11.5.1. 解析順序
+
+#### 11.5.1. 解析順序
 TABLE > JOIN TABLE > WHERE > SET 
-### 11.5.2. 實例
+
+#### 11.5.2. 實例
 ```sql
 UPDATE song
 INNER JOIN
