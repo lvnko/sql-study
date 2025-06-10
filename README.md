@@ -169,19 +169,35 @@
     +-----------+-----------------+----------------------------+
     */
     ```
-- 使用者對一首歌按愛心 - INSERT
+- 使用者對一首歌按愛心 - ``INSERT``
+    ```sql
+    -- 假設使用者 "Wallace Evans" (user.id:2) 對
+    -- 歌曲 "Our Generation" (song.id:204) 按了愛心
+
+    INSERT INTO
+        user_liked_song (song_id, user_id)
+        VALUES (204, 27);
+
+    /* 結果：
+    Query OK, 1 row affected (0.00 sec)
+    */
+    -- 注意！若你重複執行以上 SQL 會有以下錯誤訊息：
+    -- ERROR 1062 (23000): Duplicate entry '204-27' for key 'unq_song_user_pair'
+
+    -- 原因：因為考慮到一個用戶是沒有辦法重複對同一首歌加愛心，
+    -- 因此我設定了 UNIQUE(song_id, user_id) 的 CONSTRAINT
+    ```
+- 創作者更新封面圖片和自我介紹 - ``UPDATE``
 ```sql
-```
-- 創作者更新封面圖片和自我介紹 - Update
-```sql
+
 ```
 - 創作者下架專輯 - DELETE
 ```sql
 ```
-- 將歌單中的兩首歌調換顺序 - TRANSACTION
+- 將歌單中的兩首歌調換顺序 - ``TRANSACTION``
 ```sql
 ```
-- 發現原本設計的Table不完美或需求改變 - ALTER TABLE
+- 發現原本設計的Table不完美或需求改變 - ``ALTER TABLE``
 ```sql
 ```
 
