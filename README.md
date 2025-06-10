@@ -416,7 +416,26 @@
         */
         ```
     - 取得創作者發表過的專輯
-    
+        ```sql
+        -- 假設創作者為 "James Fortenberry" (artist.id:5)
+
+        SELECT
+            alb.title AS album_title,
+            alb.created_at AS album_relase_time
+        FROM album AS alb
+        WHERE alb.artist_id = 5
+        ORDER BY alb.created_at DESC;
+        /* 結果：
+        +----------------------------------+---------------------+
+        | album_title                      | album_relase_time   |
+        +----------------------------------+---------------------+
+        | Made In Favela                   | 2025-04-10 12:51:05 |
+        | Quiet Nights (Slowed and Reverb) | 2024-10-04 17:17:49 |
+        | Collected                        | 2018-05-25 17:52:02 |
+        +----------------------------------+---------------------+
+        */
+        ```
+
 - 使用者取得他的 Followers / Followings
 
 ### B.4. 追加需求
