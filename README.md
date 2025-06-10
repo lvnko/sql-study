@@ -33,13 +33,16 @@
 ###  B.2 基礎需求
 - 找到一張專輯裡面的歌 - ``ORDER BY``
     ```sql
-    -- 假設我們要找歌的專輯為 "A New Day"，其在 album table 中的 id 為 2：
+    -- 假設我們要找歌的專輯為 "A New Day"，其在 album table 中的 id 為 2
+    -- 我們將會用其為 song.album_id 的篩選條件值：
+
     SELECT
         track_number,
         name
     FROM song
-    WHERE album_id = 2 -- 這裏需要用該專輯的 album.id (e.g. 2) 來做 song.album_id 的篩選條件值
+    WHERE album_id = 2
     ORDER BY track_number;
+
     /* 結果：
     +--------------+----------------------------------------------+
     | track_number | name                                         |
@@ -57,22 +60,61 @@
     +--------------+----------------------------------------------+
     */
     ```
-- 找到一首歌所屬的專輯跟創作者 - JOIN
-```sql
-SELECT
-    song.id AS song_id,
-    song.name AS song_name,
-    album.title AS album_title,
-    artist.name AS artist_name
-FROM song
-LEFT JOIN album
-    ON song.album_id = album.id
-LEFT JOIN artist
-    ON artist.id = album.artist_id
-WHERE song.id = 170;
-```
-- 找到使用者 Liked Songs - CTE
-```sql
+- 找到一首歌所屬的專輯跟創作者 - ``JOIN``
+    ```sql
+    -- 假設我們要找專輯與創作者的歌曲為 "Don't Speak"，其在 song table 中的 id 為 170：
+
+    SELECT
+        song.id AS song_id,
+        song.name AS song_name,
+        album.title AS album_title,
+        artist.name AS artist_name
+    FROM song
+    LEFT JOIN album
+        ON song.album_id = album.id
+    LEFT JOIN artist
+        ON artist.id = album.artist_id
+    WHERE song.id = 170;
+
+    /* 結果：
+    +---------+-------------+-------------+-----------------+
+    | song_id | song_name   | album_title | artist_name     |
+    +---------+-------------+-------------+-----------------+
+    |     170 | Don't Speak | B-Sides     | William Mullins |
+    +---------+-------------+-------------+-----------------+
+    */
+    ```
+- 找到使用者 Liked Songs - CTE / Subquery
+    ```sql
+    -- 假設使用者為 "Emily Shelly" 其在 user table 中的 id 為 20：
+
+    SELECT
+        id AS song_id,
+        name AS song_name
+    FROM song
+    WHERE id IN ( 
+        SELECT song_id
+        FROM user_liked_song
+        WHERE user_id = 20
+        ORDER BY user_liked_song.id
+    );
+
+    /* 結果：
+    +---------+-----------------------------------------------------------------------------------+
+    | song_id | song_name                                                                         |
+    +---------+-----------------------------------------------------------------------------------+
+    |     341 | When The Music Stops - Live                                                       |
+    |     237 | I Used To Love H.E.R.                                                             |
+    |      27 | Funk You Up - Long Version                                                        |
+    |     406 | Everything Now                                                                    |
+    |      18 | Late Night Feelings                                                               |
+    |     292 | Generations                                                                       |
+    |     ... | ...                                                                               |
+    |     221 | Melmanos Annimos                                                                |
+    |     254 | Bad Guy                                                                           |
+    +---------+-----------------------------------------------------------------------------------+
+    257 rows in set (0.00 sec)
+    */
 ```
 - 找到一個創作者的月總觀看數/找到月總觀看數超過一百萬的發燒創作者 - GROUP BY / HAVING
 ```sql
