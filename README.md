@@ -15,7 +15,11 @@
 ## B. 習作
 課程最後以 Spotify 為需求藍本，針對其功能給出了一系列的問題，我在本章節給出解答：
 
-### B.1 開始步驟
+### B.1 Schema 設計
+收集回來的資料會被整理在以下的 Schema 結構，而習作題目也會以這個 Database 結構做回答。
+![Schema Design](materials/schema_design/drawSQL-image-export-2025-06-11.png)
+
+### B.2 開始步驟
 1. 在 **MySQL (v8.0)** 上使用 ``/materials/exercise_sql/`` 裡的 .sql 檔案建立 database，順序如下：
     > 1. spotify_clone_artist.sql
     > 2. spotify_clone_album.sql
@@ -28,9 +32,9 @@
     > 9. spotify_clone_user_added_playlist.sql
     > 10. spotify_clone_user_added_album.sql
     > 11. spotify_clone_user_liked_song.sql
-2. 在 MySQL Command Line console/terminal 上執行 [B.2](#b2-基礎需求)、[B.3](#b3-進階需求) 與 [B.4](#b4-追加需求) 中的 SQL 回答做驗證或測試。
+2. 在 MySQL Command Line console/terminal 上執行 [B.3](#b3-基礎需求)、[B.4](#b4-進階需求) 與 [B.5](#b5-追加需求) 中的 SQL 回答做驗證或測試。
 
-###  B.2 基礎需求
+### B.3 基礎需求
 - 找到一張專輯裡面的歌 - ``ORDER BY``
     ```sql
     -- 假設我們要找歌的專輯為 "A New Day"，其在 album table 中的 id 為 2
@@ -300,7 +304,7 @@
     MODIFY COLUMN bio varchar(500);
     ```
 
-### B.3. 進階需求
+### B.4. 進階需求
 - Your Library 頁面
     - 使用者取得擁有 Play list 和每個 Play list 裡的歌
         ```sql
@@ -482,7 +486,7 @@
         */
         ```
 
-### B.4. 追加需求
+### B.5. 追加需求
 - 使用者 Follow (使用者 / 專輯 / Public Playlist)
     ```sql
     -- 假設使用者為 "Thomas Vanhofwegen" (user.id:17)
@@ -603,4 +607,3 @@
     +------+-------------+---------+--------------+
     */
     ```
-
