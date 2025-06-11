@@ -607,3 +607,70 @@
     +------+-------------+---------+--------------+
     */
     ```
+
+## C. 後記：發現不合理的數據紀錄
+後來我發現我所建立的數據紀錄有一個不合理的地方，就是用戶其實不可能追蹤 (user_added_playlist) 自己親自創造的播放清單 (playlist)，也就是說 playlist 與 user_added_playlist 之間不應該存在相同的 user_id 與 playlist_id 組合，若你使用以下的 SQL 查詢便能在 user_added_playlist TABLE 中找到這些有問題的數據紀錄：
+
+```sql
+SELECT
+    uad_pl.id AS id_tbd
+FROM playlist AS pl
+INNER JOIN user_added_playlist AS uad_pl
+    ON uad_pl.user_id = pl.user_id
+    AND uad_pl.playlist_id = pl.id
+ORDER BY uad_pl.id;
+```
+
+後來我用以下的方法把他們都刪除，但進一步我還在想是否有方法可以防止這種情況發生？
+
+```sql
+DELETE FROM user_added_playlist
+WHERE id IN (
+    SELECT id_tbd FROM (
+        SELECT uad_pl.id AS id_tbd
+        FROM playlist AS pl
+        INNER JOIN user_added_playlist AS uad_pl
+            ON uad_pl.user_id = pl.user_id
+            AND uad_pl.playlist_id = pl.id
+        ORDER BY uad_pl.id
+    ) AS derived_table
+);
+```
+
+答案似乎是可以的，只要我
+```sql
+START TRANSACTION;
+DELIMITER //
+CREATE TRIGGER check_user_playlist_insert
+BEFORE INSERT ON user_added_playlist
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM playlist
+        WHERE user_id = NEW.user_id
+        AND id = NEW.playlist_id
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Same combination of user_id and playlist_id found in playlists table.';
+    END IF;
+END//
+DELIMITER ;
+
+/*
+mysql> SELECT id, user_id FROM playlist WHERE user_id = 14;
++-----+---------+
+| id  | user_id |
++-----+---------+
+|  79 |      14 | <-
+| 146 |      14 |
++-----+---------+
+2 rows in set (0.00 sec)
+*/
+
+/*
+mysql> INSERT INTO user_added_playlist (playlist_id, user_id) VALUES (79, 14);
+ERROR 1644 (45000): Same combination of user_id and playlist_id found in playlists table.
+*/
+
+```
