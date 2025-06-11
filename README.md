@@ -621,7 +621,7 @@ INNER JOIN user_added_playlist AS uad_pl
 ORDER BY uad_pl.id;
 ```
 
-後來我用以下的方法把他們都刪除，但進一步我還在想是否有方法可以防止這種情況發生？
+結果我用以下的方法把它們都刪除，但進一步我還在想是否有方法可以防止這種情況發生？
 
 ```sql
 DELETE FROM user_added_playlist
@@ -637,7 +637,7 @@ WHERE id IN (
 );
 ```
 
-答案似乎是可以的，只要我
+答案似乎是可以的，只要我利用 MySQL 自身具備的功能 ```DELIMITER`` 來設定便可以：
 ```sql
 START TRANSACTION;
 DELIMITER //
@@ -656,21 +656,29 @@ BEGIN
     END IF;
 END//
 DELIMITER ;
-
-/*
-mysql> SELECT id, user_id FROM playlist WHERE user_id = 14;
-+-----+---------+
-| id  | user_id |
-+-----+---------+
-|  79 |      14 | <-
-| 146 |      14 |
-+-----+---------+
-2 rows in set (0.00 sec)
-*/
-
-/*
-mysql> INSERT INTO user_added_playlist (playlist_id, user_id) VALUES (79, 14);
-ERROR 1644 (45000): Same combination of user_id and playlist_id found in playlists table.
-*/
-
 ```
+
+設定好後，我做了以下的測試，結果是正面的：<br/>
+1. 首先我們在 ``playlist`` TABLE 找出使用者 "Lorene Murray" (user.id:14) 所創建的 playlist：
+    ```sql
+    SELECT id, user_id FROM playlist WHERE user_id = 14;
+
+    /* 結果
+    +-----+---------+
+    | id  | user_id |
+    +-----+---------+
+    |  79 |      14 | <- 拿這個組合測試
+    | 146 |      14 |
+    +-----+---------+
+    2 rows in set (0.00 sec)
+    */
+    ```
+2. 再來我們試試看把這個組合 (playlist_id:79, user_id:14) 輸入到 ``user_added_playlist`` TABLE，看看 MySQL 是否會報錯：
+    ```sql
+    INSERT INTO user_added_playlist (playlist_id, user_id) VALUES (79, 14);
+    
+    /* 結果：
+    ERROR 1644 (45000): Same combination of user_id and playlist_id found in playlists table.
+    */
+    -- 結果 MySQL 根據我們在 DELIMITER 設定的報錯條件，確實地報出錯誤訊息。
+    ```
