@@ -439,7 +439,7 @@
 
     - 使用者取得他的 Followers / Followings
         ```sql
-        -- 假設創作者為 "Sharon Partain" (artist.id:16)
+        -- 假設使用者為 "Sharon Partain" (user.id:16)
 
         SELECT fr.name AS follower_name
         FROM user_follower AS ufr
@@ -484,6 +484,64 @@
 
 ### B.4. 追加需求
 - 使用者 Follow (使用者 / 專輯 / Public Playlist)
+    ```sql
+    -- 假設使用者為 "Thomas Vanhofwegen" (user.id:17)
+
+    -- 1. 使用者 follow 另一位使用者 "Richard Adair" (user.id:42)
+    INSERT INTO
+        user_follower (follower_id, user_id)
+        VALUES (17, 42);
+
+    -- 2. 使用者 follow 一張名為 "Collateral Beauty (Original Motion Picture Soundtrack)" 的專輯 (album.id:72)
+    INSERT INTO
+        user_added_album (user_id, album_id)
+        VALUES (17, 72);
+
+    -- 3. 使用者 follow 一個名為 "KLB: S as antigas" 的公眾播方清單 (playlist.id:34)
+    INSERT INTO
+        user_added_playlist (user_id, playlist_id)
+        VALUES (17, 34);
+    ```
 - 使用者發佈歌單
+    ```sql
+    -- 假設使用者為 "Eduardo Bode" (user.id:18)
+
+    START TRANSACTION;
+
+    INSERT INTO
+        playlist (user_id, name, info, cover_pic)
+        VALUES (18, 'Gone Gone Trouble Minded!', 'A raw, soulful mix of bluesy heartache and defiant anthems for a restless spirit.', 'https://thumbnailer.mixcloud.com/unsafe/500x500/extaudio/0/b/1/e/66b4-51b3-4ffd-9190-5994919cf07e');
+
+    -- 運用 LAST_INSERT_ID() 抓取同一個 Session 內
+    -- 上一次 INSERT record 中的 AUTO INCREMENT 欄位值
+    -- 而這個值就是我們要 INSERT 進 playlist_entry 的 playlist_id
+    INSERT INTO
+        playlist_entry (playlist_id, song_id, order_number)
+        VALUES (LAST_INSERT_ID(), 84, 0),
+            (LAST_INSERT_ID(), 2, 1),
+            (LAST_INSERT_ID(), 77, 2),
+            (LAST_INSERT_ID(), 42, 3),
+            (LAST_INSERT_ID(), 55, 4),
+            (LAST_INSERT_ID(), 89, 5);
+
+    COMMIT;
+
+    /* 結果：
+    mysql> SELECT ety.order_number AS `order`, song.name AS `song_name` FROM playlist_entry AS ety LEFT JOIN song ON song.id = ety.song_id WHERE ety.playlist_id = (SELECT id FROM playlist ORDER BY id DESC LIMIT 1) ORDER BY ety.order_number;
+    +-------+----------------------------------+
+    | order | song_name                        |
+    +-------+----------------------------------+
+    |     0 | Come as You Are                  |
+    |     1 | The General                      |
+    |     2 | Rollin'                          |
+    |     3 | Memrias                          |
+    |     4 | Ya Omri (feat. Lacrim & Houssem) |
+    |     5 | Rock and Roll                    |
+    +-------+----------------------------------+
+    */
+    ```
 - 將一首歌加入/移除歌單
+```sql
+
+```
 
