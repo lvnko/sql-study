@@ -467,7 +467,7 @@
             ON fg.id = ufg.user_id
         WHERE ufg.follower_id = 16;
 
-        /* 使用者取得期 followings 的結果：
+        /* 使用者取得其 followings 的結果：
         +--------------------+
         | following_name     |
         +--------------------+
