@@ -619,6 +619,7 @@ INNER JOIN user_added_playlist AS uad_pl
     ON uad_pl.user_id = pl.user_id
     AND uad_pl.playlist_id = pl.id
 ORDER BY uad_pl.id;
+-- 大概會找到 70 筆紀錄。
 ```
 
 結果我用以下的方法把它們都刪除，但進一步我還在想是否有方法可以防止這種情況發生？
