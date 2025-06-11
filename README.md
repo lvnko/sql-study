@@ -609,7 +609,7 @@
     ```
 
 ## C. 後記：發現不合理的數據紀錄
-後來我發現我所建立的數據紀錄有一個不合理的地方，就是用戶其實不可能追蹤 (user_added_playlist) 自己親自創造的播放清單 (playlist)，也就是說 playlist 與 user_added_playlist 之間不應該存在相同的 user_id 與 playlist_id 組合，若你使用以下的 SQL 查詢便能在 user_added_playlist TABLE 中找到這些有問題的數據紀錄：
+後來我發現我所建立的數據紀錄有一個不合理的地方，就是用戶其實不可能追蹤 (``user_added_playlist``) 自己親自創造的播放清單 (``playlist``)，也就是說 ``playlist`` 與 ``user_added_playlist`` 之間不應該存在相同的 ``user_id`` 與 ``playlist_id`` 組合，若你使用以下的 SQL 查詢便能在 ``user_added_playlist`` TABLE 中找到這些有問題的數據紀錄：
 
 ```sql
 SELECT
@@ -638,7 +638,7 @@ WHERE id IN (
 );
 ```
 
-答案似乎是可以的，只要我利用 MySQL 自身具備的功能 ```DELIMITER`` 來設定便可以：
+答案似乎是可以的，只要我利用 MySQL 自身具備的功能 ``DELIMITER`` 來設定便可以：
 ```sql
 START TRANSACTION;
 DELIMITER //
@@ -660,7 +660,7 @@ DELIMITER ;
 ```
 
 設定好後，我做了以下的測試，結果是正面的：<br/>
-1. 首先我們在 ``playlist`` TABLE 找出使用者 "Lorene Murray" (user.id:14) 所創建的 playlist：
+1. 首先我們在 ``playlist`` TABLE 找出使用者 "Lorene Murray" (``user.id``:14) 所創建的 ``playlist``：
     ```sql
     SELECT id, user_id FROM playlist WHERE user_id = 14;
 
@@ -674,7 +674,7 @@ DELIMITER ;
     2 rows in set (0.00 sec)
     */
     ```
-2. 再來我們試試看把這個組合 (playlist_id:79, user_id:14) 輸入到 ``user_added_playlist`` TABLE，看看 MySQL 是否會報錯：
+2. 再來我們試試看把這個組合 (``playlist_id``:79, ``user_id``:14) 輸入到 ``user_added_playlist`` TABLE，看看 MySQL 是否會報錯：
     ```sql
     INSERT INTO user_added_playlist (playlist_id, user_id) VALUES (79, 14);
     
